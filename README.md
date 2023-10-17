@@ -696,28 +696,20 @@ echo -e "==================================="
 > Script dibawah ini terdapat pada root node PrabukusumaWebServer, untuk menjalankannya bisa langsung dengan melakukan command bash ```no9.sh```
 
 ```bash
+apt-get update
 apt install nginx php php-fpm -y
 
-
-# Buat folder jarkom
 mkdir /var/www/asibkuy
 
-
-# echo ke file /var/www/asibkuy/index.php
 echo '<?php
-echo "Halo, Kamu berada di PrabukusumaWebServer ";
+echo "Hi this is message PrabukusumaWebServer";
 ?>' > /var/www/asibkuy/index.php
-
 
 echo '
  server {
-
-
         listen 80;
 
-
         root /var/www/asibkuy;
-
 
         index index.php index.html index.htm;
         server_name _;
@@ -726,7 +718,6 @@ echo '
         location / {
                         try_files $uri $uri/ /index.php?$query_string;
         }
-
 
         # pass PHP scripts to FastCGI server
         location ~ \.php$ {
@@ -739,24 +730,19 @@ echo '
                         deny all;
         }
 
-
-        error_log /var/log/nginx/jarkom_error.log;
-        access_log /var/log/nginx/jarkom_access.log;
+        error_log /var/log/nginx/asibkuy_error.log;
+        access_log /var/log/nginx/asibkuy_access.log;
  }
 ' > /etc/nginx/sites-available/asibkuy
 
 
-ln -s /etc/nginx/sites-available/asibkuy /etc/nginx/sites-enabled/asibkuy
-
+ln -s /etc/nginx/sites-available/asibkuy /etc/nginx/sites-enabled
 
 rm /etc/nginx/sites-enabled/default
 
-
-
-
 service nginx restart
-service php7.0-fpm stop
-service php7.0-fpm start
+service php7.2-fpm stop
+service php7.2-fpm start
 ```
 
 > Script dibawah ini terdapat pada root node AbimanyuWebServer, untuk menjalankannya bisa langsung dengan melakukan command bash ```no9.sh```
@@ -769,30 +755,23 @@ apt install nginx php php-fpm -y
 mkdir /var/www/asibkuy
 
 
-# echo ke file /var/www/asibkuy/index.php
 echo '<?php
-echo "Halo, Kamu berada di AbimanyuWebServer ";
+echo "Hi this is message AbimanyuWebServer";
 ?>' > /var/www/asibkuy/index.php
 
 
 echo '
  server {
-
-
         listen 80;
 
-
         root /var/www/asibkuy;
-
 
         index index.php index.html index.htm;
         server_name _;
 
-
         location / {
                         try_files $uri $uri/ /index.php?$query_string;
         }
-
 
         # pass PHP scripts to FastCGI server
         location ~ \.php$ {
@@ -811,18 +790,14 @@ echo '
  }
 ' > /etc/nginx/sites-available/asibkuy
 
-
-ln -s /etc/nginx/sites-available/asibkuy /etc/nginx/sites-enabled/asibkuy
+ln -s /etc/nginx/sites-available/asibkuy /etc/nginx/sites-enabled
 
 
 rm /etc/nginx/sites-enabled/default
 
-
-
-
 service nginx restart
-service php7.0-fpm stop
-service php7.0-fpm start
+service php7.2-fpm stop
+service php7.2-fpm start
 ```
 
 > Script dibawah ini terdapat pada root node WisanggeniWebServer, untuk menjalankannya bisa langsung dengan melakukan command bash ```no9.sh```
@@ -835,30 +810,23 @@ apt install nginx php php-fpm -y
 mkdir /var/www/asibkuy
 
 
-# echo ke file /var/www/asibkuy/index.php
 echo '<?php
-echo "Halo, Kamu berada di WisanggeniWebServer ";
+echo "Hi this is message WisanggeniWebServer";
 ?>' > /var/www/asibkuy/index.php
 
 
 echo '
  server {
-
-
         listen 80;
 
-
         root /var/www/asibkuy;
-
 
         index index.php index.html index.htm;
         server_name _;
 
-
         location / {
                         try_files $uri $uri/ /index.php?$query_string;
         }
-
 
         # pass PHP scripts to FastCGI server
         location ~ \.php$ {
@@ -877,35 +845,33 @@ echo '
  }
 ' > /etc/nginx/sites-available/asibkuy
 
-
-ln -s /etc/nginx/sites-available/asibkuy /etc/nginx/sites-enabled/asibkuy
+ln -s /etc/nginx/sites-available/asibkuy /etc/nginx/sites-enabled
 
 
 rm /etc/nginx/sites-enabled/default
 
-
-
-
 service nginx restart
-service php7.0-fpm stop
-service php7.0-fpm start
+service php7.2-fpm stop
+service php7.2-fpm start
 ```
 
 > Script dibawah ini terdapat pada root node ArjunaLoadBalancer, untuk menjalankannya bisa langsung dengan melakukan command bash ```no9.sh```
 
 ```bash
+apt-get update
+
+# Install bind9
 apt-get install bind9 nginx -y
 
-
-echo ' # Default menggunakan Round Robin
+echo '
  upstream myweb  {
-  server 192.172.1.4 #IP Abimanyu
-  server 192.172.1.5 #IP Prabukusuma 
-  server 192.172.1.6 #IP Wisanggeni
+  server 192.175.1.5 #IP Prabukusuma
+  server 192.175.1.4 #IP Abimanyu
+  server 192.175.1.6#IP Wisanggeni
  }
 
 
-server {
+ server {
   listen 80;
   server_name arjuna.a13.com www.arjuna.a13.com;
 
@@ -916,15 +882,16 @@ server {
  }' > /etc/nginx/sites-available/lb-asibkuy
 
 
-ln -s /etc/nginx/sites-available/lb-asibkuy /etc/nginx/sites-enabled/lb-asibkuy
-
+ln -s /etc/nginx/sites-available/lb-asibkuy /etc/nginx/sites-enabled
 
 service nginx restart
+
 ```
 
 ### Testing
 
-![image](https://github.com/RuleLuluDamara/Jarkom-Modul-2-A13-2023/assets/105763198/85ab306a-9a0d-4673-8d38-91994006170f)
+![image](https://github.com/RuleLuluDamara/Jarkom-Modul-2-A13-2023/assets/105763198/0ecf3ada-11d7-4d9e-8c7b-9f4a8abf3e2a)
+
 
 ## Question 10
 > Kemudian gunakan algoritma Round Robin untuk Load Balancer pada Arjuna. Gunakan server_name pada soal nomor 1. Untuk melakukan pengecekan akses alamat web tersebut kemudian pastikan worker yang digunakan untuk menangani permintaan akan berganti ganti secara acak. Untuk webserver di masing-masing worker wajib berjalan di port 8001-8003. Contoh
@@ -940,10 +907,7 @@ Pertama-tama, merubah konfigurasi file ```/etc/nginx/sites-available/asibkuy``` 
 ```bash
 echo '
  server {
-
-
-        listen 8001;
-
+        listen 8002;
 
         root /var/www/asibkuy;
 
@@ -969,8 +933,43 @@ echo '
         }
 
 
-        error_log /var/log/nginx/jarkom_error.log;
-        access_log /var/log/nginx/jarkom_access.log;
+        error_log /var/log/nginx/asibkuy_error.log;
+        access_log /var/log/nginx/asibkuy_access.log;
  }
 ' > /etc/nginx/sites-available/asibkuy
 ```
+
+> Script dibawah ini terdapat pada root node ArjunaLoadBalancer, untuk menjalankannya bisa langsung dengan melakukan command bash ```no10.sh```
+
+```bash
+apt-get update
+
+# Install bind9
+apt-get install bind9 nginx -y
+
+echo ' # Default menggunakan Round Robin
+ upstream myweb  {
+  server 192.175.1.5:8001; #IP Prabukusuma
+  server 192.175.1.4:8002; #IP Abimanyu
+  server 192.175.1.6:8003; #IP Wisanggeni
+ }
+
+
+ server {
+  listen 80;
+  server_name arjuna.a13.com www.arjuna.a13.com;
+
+
+  location / {
+  proxy_pass http://myweb;
+  }
+ }' > /etc/nginx/sites-available/lb-asibkuy
+
+
+ln -s /etc/nginx/sites-available/lb-asibkuy /etc/nginx/sites-enabled
+
+
+service nginx restart
+```
+
+
