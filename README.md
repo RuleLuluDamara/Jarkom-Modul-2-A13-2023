@@ -890,8 +890,7 @@ service nginx restart
 
 ### Testing
 
-![image](https://github.com/RuleLuluDamara/Jarkom-Modul-2-A13-2023/assets/105763198/0ecf3ada-11d7-4d9e-8c7b-9f4a8abf3e2a)
-
+![image](https://github.com/RuleLuluDamara/Jarkom-Modul-2-A13-2023/assets/105763198/f6a8f9ee-7218-4cf4-889b-53da56b876ba)
 
 ## Question 10
 > Kemudian gunakan algoritma Round Robin untuk Load Balancer pada Arjuna. Gunakan server_name pada soal nomor 1. Untuk melakukan pengecekan akses alamat web tersebut kemudian pastikan worker yang digunakan untuk menangani permintaan akan berganti ganti secara acak. Untuk webserver di masing-masing worker wajib berjalan di port 8001-8003. Contoh
@@ -902,12 +901,87 @@ service nginx restart
 ### Script 
 
 Pertama-tama, merubah konfigurasi file ```/etc/nginx/sites-available/asibkuy``` pada node PrabukusumaWebServer.
+
 > Script dibawah ini terdapat pada root node PrabukusumaWebServer, untuk menjalankannya bisa langsung dengan melakukan command bash ```no10.sh```
 
 ```bash
 echo '
  server {
+        listen 8001;
+
+        root /var/www/asibkuy;
+
+
+        index index.php index.html index.htm;
+        server_name _;
+
+
+        location / {
+                        try_files $uri $uri/ /index.php?$query_string;
+        }
+
+
+        # pass PHP scripts to FastCGI server
+        location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+        }
+
+
+ location ~ /\.ht {
+                        deny all;
+        }
+
+
+        error_log /var/log/nginx/asibkuy_error.log;
+        access_log /var/log/nginx/asibkuy_access.log;
+ }
+' > /etc/nginx/sites-available/asibkuy
+```
+
+> Script dibawah ini terdapat pada root node AbimanyuWebServer, untuk menjalankannya bisa langsung dengan melakukan command bash ```no10.sh```
+
+```bash
+echo '
+ server {
         listen 8002;
+
+        root /var/www/asibkuy;
+
+
+        index index.php index.html index.htm;
+        server_name _;
+
+
+        location / {
+                        try_files $uri $uri/ /index.php?$query_string;
+        }
+
+
+        # pass PHP scripts to FastCGI server
+        location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+        }
+
+
+ location ~ /\.ht {
+                        deny all;
+        }
+
+
+        error_log /var/log/nginx/asibkuy_error.log;
+        access_log /var/log/nginx/asibkuy_access.log;
+ }
+' > /etc/nginx/sites-available/asibkuy
+```
+
+> Script dibawah ini terdapat pada root node WisanggeniWebServer, untuk menjalankannya bisa langsung dengan melakukan command bash ```no10.sh```
+
+```bash
+echo '
+ server {
+        listen 8003;
 
         root /var/www/asibkuy;
 
@@ -972,4 +1046,13 @@ ln -s /etc/nginx/sites-available/lb-asibkuy /etc/nginx/sites-enabled
 service nginx restart
 ```
 
+###Testing
 
+- PrabukususmaWebServer
+![image](https://github.com/RuleLuluDamara/Jarkom-Modul-2-A13-2023/assets/105763198/abef9e7b-0c59-4651-94a4-ab08dc2625b4)
+
+- AbimanyuWebServer
+![image](https://github.com/RuleLuluDamara/Jarkom-Modul-2-A13-2023/assets/105763198/86b9e6c3-a879-42a6-9ce5-190fb72ddd8c)
+
+- WisanggeniWebServer
+![image](https://github.com/RuleLuluDamara/Jarkom-Modul-2-A13-2023/assets/105763198/16d35ee4-8ad6-4146-af54-9b2603672df5)
