@@ -1097,7 +1097,7 @@ rm -rf /var/www/abimanyu.a13/abimanyu.zip
 > Kemudian di tes pada Node Client dengan menjalankan ```lynx.abimanyu.a13.com``` atau ```lynx www.abimanyu.a13.com```
 
 
-### Question 12
+## Question 12
 > Setelah itu ubahlah agar url www.abimanyu.yyy.com/index.php/home menjadi www.abimanyu.yyy.com/home.
 
 ### Script
@@ -1112,3 +1112,40 @@ Alias "/home" "/var/www/abimanyu.a13/index.php/home"
 ```
 
 > Lalu tes pada Node Client menggunakan ```lynx www.abimanyu.a13.com/home```
+
+## Question 13
+> Selain itu, pada subdomain www.parikesit.abimanyu.yyy.com, DocumentRoot disimpan pada /var/www/parikesit.abimanyu.yyy
+
+
+### Script
+> Script dibawah disimpan dalam file ```nano no13.sh``` pada Node Abimanyu Web Server
+
+```bash
+mkdir /var/www/parikesit.abimanyu.a13
+
+touch /etc/apache2/sites-available/parikesit.abimanyu.a13.com.conf
+
+echo '<VirtualHost *:80>
+	ServerAdmin webmaster@localhost
+	DocumentRoot /var/www/parikesit.abimanyu.a13
+	ServerName parikesit.abimanyu.a13
+	ServerAlias www.parikesit.abimanyu.a13
+
+	<Directory /var/www/parikesit.abimanyu.a13/>
+		Options +Indexes
+	</Directory>
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>' > /etc/apache2/sites-available/parikesit.abimanyu.a13.com.conf
+
+a2enmod rewrite parikesit.abimanyu.a13.com.conf
+a2ensite parikesit.abimanyu.a13.com.conf
+service apache2 restart
+
+unzip -j /var/www/parikesit.abimanyu.a08/abimanyu.zip -d /var/www/parikesit.abimanyu.a13
+
+rm -rf /var/www/parikesit.abimanyu.a13/parikesit_abimanyu.zip
+```
+
+> Kemudian tes pada Node Client dengan ```lynx parikesit.abimanyu.a13.com```
