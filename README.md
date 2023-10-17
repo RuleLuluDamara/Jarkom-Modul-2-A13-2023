@@ -1056,3 +1056,59 @@ service nginx restart
 
 - WisanggeniWebServer
 ![image](https://github.com/RuleLuluDamara/Jarkom-Modul-2-A13-2023/assets/105763198/16d35ee4-8ad6-4146-af54-9b2603672df5)
+
+## Question 11
+>Selain menggunakan Nginx, lakukan konfigurasi Apache Web Server pada worker Abimanyu dengan web server www.abimanyu.yyy.com. Pertama dibutuhkan web server dengan DocumentRoot pada /var/www/abimanyu.yyy
+
+### Script
+> Script dibawah disimpan dalam file ```nano no11.sh``` yang berada pada node Abimanyu Web Server
+
+```bash
+apt-get install apache2
+apt-get install php
+apt-get install libapache2-mod-php7.0
+apt-get install wget
+apt-get install unzip
+
+mkdir /var/www/abimanyu.a13
+
+touch /etc/apache2/sites-available/abimanyu.a13.com.conf
+
+echo '<VirtualHost *:80>
+	ServerAdmin webmaster@localhost
+	DocumentRoot /var/www/abimanyu.a13
+	ServerName abimanyu.a13.com
+	ServerAlias www.abimanyu.a13.com
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>' > /etc/apache2/sites-available/abimanyu.a13.com.conf
+
+a2enmod rewrite abimanyu.a13.com.conf
+a2ensite abimanyu.a13.com.conf
+service apache2 restart
+
+wget 'https://drive.usercontent.google.com/download?id=1a4V23hwK9S7hQEDEcv9FL14UkkrHc-Zc&export=download&authuser=0&confirm=t&uuid=ba803a01-09da-443a-aca9-f9af1f05407a&at=APZUnTW3k1liYo8m6AXA1QNDCNX1:1696931215102'
+unzip -j /var/www/abimanyu.a13/abimanyu.zip -d /var/www/abimanyu.a08
+
+rm -rf /var/www/abimanyu.a13/abimanyu.zip
+```
+
+> Kemudian di tes pada Node Client dengan menjalankan ```lynx.abimanyu.a13.com``` atau ```lynx www.abimanyu.a13.com```
+
+
+### Question 12
+> Setelah itu ubahlah agar url www.abimanyu.yyy.com/index.php/home menjadi www.abimanyu.yyy.com/home.
+
+### Script
+> Untuk soal diatas menggunakan ```Direktori Alias``` yang diletakkan pada file konfigurasi abimanyu.a13
+
+```bash
+<Directory /var/www/abimanyu.a08/>
+		Options +Indexes
+</Directory>
+
+Alias "/home" "/var/www/abimanyu.a13/index.php/home"
+```
+
+> Lalu tes pada Node Client menggunakan ```lynx www.abimanyu.a13.com/home```
