@@ -1104,7 +1104,7 @@ rm -rf /var/www/abimanyu.a13/abimanyu.zip
 > Untuk soal diatas menggunakan ```Direktori Alias``` yang diletakkan pada file konfigurasi abimanyu.a13
 
 ```bash
-<Directory /var/www/abimanyu.a08/>
+<Directory /var/www/abimanyu.a13/>
 		Options +Indexes
 </Directory>
 
